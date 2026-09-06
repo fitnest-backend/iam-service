@@ -18,6 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/internal/users")
 @RequiredArgsConstructor
@@ -27,6 +30,12 @@ public class InternalUserController {
 
     private final UserService userService;
     private final UserResponseMapper userResponseMapper;
+
+    @GetMapping("/active-customer-ids")
+    @Operation(summary = "Aktiv müştəri ID-ləri", description = "ROLE_USER və silinməmiş istifadəçilərin ID siyahısını qaytarır (bulk coin kampaniyası üçün).")
+    public ResponseEntity<Map<String, List<Long>>> findActiveCustomerUserIds() {
+        return ResponseEntity.ok(Map.of("userIds", userService.findActiveCustomerUserIds()));
+    }
 
     @GetMapping("/{userId}")
     @Operation(summary = "İstifadəçini ID ilə əldə edin", description = "İstifadəçi ID-si ilə istifadəçi məlumatlarını qaytarır.")

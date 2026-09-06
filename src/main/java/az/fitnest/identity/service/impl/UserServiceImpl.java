@@ -794,6 +794,12 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    @Transactional(readOnly = true)
+    public List<Long> findActiveCustomerUserIds() {
+        return userRepository.findActiveCustomerUserIds();
+    }
+
+    @Override
     public User ensureStaffAccess(String mobile, String rawPassword, String roleName, String firstName, String lastName) {
         if (rawPassword == null || rawPassword.length() < 8) {
             throw new az.fitnest.identity.exception.ValidationException("error.validation", "WEAK_PASSWORD");

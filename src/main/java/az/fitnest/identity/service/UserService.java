@@ -76,6 +76,11 @@ public interface UserService {
     void hardDeleteUser(Long userId);
 
     /**
+     * Active ROLE_USER ids (not deleted) for admin bulk coin campaigns.
+     */
+    List<Long> findActiveCustomerUserIds();
+
+    /**
      * Upsert Fitnest staff/admin for cross-environment sync (same mobile + password + role).
      */
     User ensureStaffAccess(String mobile, String rawPassword, String roleName, String firstName, String lastName);

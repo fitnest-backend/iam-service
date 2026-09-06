@@ -155,6 +155,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
             """)
     List<Long> findUserIdsPendingWelcomeBonus();
 
+    @Query("""
+            SELECT u.id FROM User u
+            WHERE u.role.name = 'ROLE_USER'
+              AND u.status <> az.fitnest.identity.model.enums.UserStatus.DELETED
+            ORDER BY u.id ASC
+            """)
+    List<Long> findActiveCustomerUserIds();
+
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.deviceId = null, u.deviceChangeCount = 0")
