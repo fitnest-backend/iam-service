@@ -792,7 +792,6 @@ public class UserServiceImpl implements UserService {
         log.warn("User {} has been PERMANENTLY DELETED by admin", id);
     }
 
-    @Transactional
     @Override
     @Transactional(readOnly = true)
     public List<Long> findActiveCustomerUserIds() {
