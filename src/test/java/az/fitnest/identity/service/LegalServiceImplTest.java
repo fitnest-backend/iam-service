@@ -3,6 +3,7 @@ package az.fitnest.identity.service;
 import az.fitnest.identity.dto.request.CreateLegalDocumentRequest;
 import az.fitnest.identity.dto.request.UpdateLegalDocumentRequest;
 import az.fitnest.identity.dto.response.LegalDocumentResponse;
+import az.fitnest.identity.dto.response.PublicLegalDocumentResponse;
 import az.fitnest.identity.mapper.AdminConsentResponseMapper;
 import az.fitnest.identity.mapper.LegalDocumentResponseMapper;
 import az.fitnest.identity.mapper.UserConsentStatusResponseMapper;
@@ -181,5 +182,22 @@ public class LegalServiceImplTest {
         assertNotNull(response);
         assertEquals("Az Məzmunu", response.content()); // Falls back to AZ content
         assertEquals("1.0", response.version());
+    }
+
+    @Test
+    void publicLandingResponse_shouldExposeContentWithoutInternalTitle() {
+        LocalDateTime updated = LocalDateTime.of(2026, 9, 1, 12, 0);
+        LegalDocumentResponse source = new LegalDocumentResponse(
+                "1.0",
+                "PRIVACY_POLICY",
+                "<p>Hi</p>",
+                updated
+        );
+
+        PublicLegalDocumentResponse response = PublicLegalDocumentResponse.from(source);
+
+        assertEquals("1.0", response.version());
+        assertEquals("<p>Hi</p>", response.content());
+        assertEquals(updated, response.updatedAt());
     }
 }
